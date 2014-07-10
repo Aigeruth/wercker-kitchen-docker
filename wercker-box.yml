@@ -1,0 +1,28 @@
+name: kitchen-docker
+version: 0.0.1
+inherits: wercker-labs/docker
+type: main
+platform: ubuntu@12.04
+packages:
+  - rvm
+  - ruby@2.1.2
+  - docker
+keywords:
+  - rvm
+  - ruby
+  - docker
+script: |
+  sudo apt-get update -y
+  sudo apt-get install git zlib1g-dev libreadline-dev libqtwebkit-dev curl -y
+  sudo apt-get remove ruby1.9.1
+  curl -sSL https://get.rvm.io | bash -s stable
+  echo "bundler -v~>1.5.1" > $HOME/.rvm/gemsets/global.gems
+  source $HOME/.rvm/scripts/rvm
+  rvm install 2.1.2
+  rvm --default use 2.1.2
+  echo "gem: --no-rdoc --no-ri" >> $HOME/.gemrc
+  rvm use 2.1.2
+  docker pull debian:7.4
+  docker pull ubuntu:12.04
+  docker pull ubuntu:14.04
+  docker pull centos:centos6
